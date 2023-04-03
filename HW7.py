@@ -58,7 +58,7 @@ def make_players_table(data, cur, conn):
     player_positions = []
     player_birthyears = []
     player_nationalities = []
-    print(data['squad'])
+    # print(data['squad'])
     for player in data['squad']:
         player_ids.append(player['id'])
         player_names.append(player['name'])
@@ -88,7 +88,14 @@ def make_players_table(data, cur, conn):
         # the player's name, their position_id, and their nationality.
 
 def nationality_search(countries, cur, conn):
-    pass
+    player_tuples = []
+    for country in countries:
+        rows = cur.execute("SELECT name, position_id, nationality FROM Players WHERE nationality = ?", (country,))
+        row = rows.fetchone()
+        while row != None:
+            player_tuples.append(row)
+            row = rows.fetchone()
+    return player_tuples
 
 ## [TASK 3]: 10 points
 # finish the function birthyear_nationality_search
